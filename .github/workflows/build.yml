@@ -21,7 +21,10 @@ jobs:
         run: buildozer android debug > build.log 2>&1
       - name: Show error
         if: failure()
-        run: tail -n 80 build.log
+        run: |
+          grep -n -i -E "error|fatal|failed|no such|not found" build.log | grep -v -i "warning" | tail -n 30
+          echo =========
+          tail -n 260 build.log | head -n 120
       - uses: actions/upload-artifact@v4
         with:
           name: JARVIS-apk
